@@ -2,10 +2,13 @@ import axios from 'axios';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { Redirect } from 'react-router-dom';
 import { DB_URL } from '../../util/constants';
+import { useHistory } from "react-router-dom";
 
 export default function Login(props){
 
+    const history = useHistory();
 
     async function authenticateUser(){
         await axios.get(`${DB_URL}/login/${props.username}`,{
@@ -13,9 +16,10 @@ export default function Login(props){
                 password: props.password
             } 
         })
-        .then(response => props.storeToken(response.data))
+        .then(async response => props.storeToken(response.data))
+        .then(await getUserData(props.token))
         .catch(error => console.log(error));
-        getUserData(props.token)
+
     }
 
     async function getUserData(token){
@@ -24,8 +28,15 @@ export default function Login(props){
                 Authorization: props.token
             }
         })
-        .then(response => props.storeUser(response.data))
+        .then(response => {
+            console.log("RESP DATA::" + response.data)
+            props.storeUser(response.data)
+        })
+        // .then(() => {
+        // })
         .catch(error => console.log(error));
+        // return <Redirect to="/index"/>
+        history.push("/");
     }
 
     return(

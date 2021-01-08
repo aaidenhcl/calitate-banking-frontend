@@ -7,13 +7,9 @@ export class Auth extends Component{
         super()
 
         this.state = {
-            user: undefined, //needs to be moved to App
-            token: localStorage.getItem("token"), //needs to be moved to App
             username: undefined,
             password:undefined
         }
-        this.storeUser = this.storeUser.bind(this);
-        this.storeToken = this.storeToken.bind(this);
         this.onChange = this.onChange.bind(this);
     }
 
@@ -21,20 +17,6 @@ export class Auth extends Component{
         this.setState({
             [event.target.name]: event.target.value
           })
-    }
-
-    storeToken(token){
-        console.log(token);
-        this.setState({
-            token
-        })
-          window.localStorage.setItem("token", token);
-    }
-
-    storeUser(user){
-        this.setState({
-            user
-        })
     }
 
     render(){
@@ -45,7 +27,7 @@ export class Auth extends Component{
                         <h2>Signup</h2>
                         <Signup formFiller={this.onChange} username={this.state.username} password={this.state.password}/>
                         <h2>Login</h2>
-                        <Login storeUser={this.storeUser} token={this.state.token} storeToken={this.storeToken} formFiller={this.onChange} username={this.state.username} password={this.state.password}/>
+                        <Login storeUser={this.props.storeUser} token={this.props.token} storeToken={this.props.storeToken} formFiller={this.onChange} username={this.state.username} password={this.state.password}/>
                     </div>
                 </div>
             </div>
