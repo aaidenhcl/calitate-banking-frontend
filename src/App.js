@@ -59,7 +59,7 @@ storeToken(token){
                 storeToken={this.storeToken} 
                 storeUser={this.storeUser}
               />
-            )}>
+            )}>               
             </Route>
           </Switch>
         </Router>

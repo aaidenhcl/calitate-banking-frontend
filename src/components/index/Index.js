@@ -22,11 +22,14 @@ export class Index extends React.Component{
 
     async componentDidMount(){
         this._isMounted = true;
+        this.setState({
+            isMounted: true
+        })
         //get user data and store to state
         console.log(this.state.username)
         console.log(this.props.token);
-        if(this._isMounted){
-            await axios.get(`${DB_URL}/obtainUserData/${this.state.username}`,{
+        if(this._isMounted && this.state.username){
+            await axios.post(`${DB_URL}/users/${this.state.username}`,{
                 headers: {
                     Authorization: this.props.token
                 }

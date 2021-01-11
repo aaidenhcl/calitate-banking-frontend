@@ -10,7 +10,7 @@ export default function Signup(props){
     function createUser(e){
         // console.log(DB_URL);
         console.log(e.target.parentNode.children[0]);
-        axios.post(`${DB_URL}/user`, {
+        axios.post(`${DB_URL}/users`, {
             username: props.username,
             password: props.password
         })
