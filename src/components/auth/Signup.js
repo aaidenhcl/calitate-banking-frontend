@@ -7,6 +7,9 @@ import {DB_URL} from '../../util/constants';
 
 export default function Signup(props){
 
+    /*
+    * simple post user route using updated states from form
+    */
     function createUser(e){
         console.log("EMAIL::: " + props.email);
         console.log(e.target.parentNode.children[0]);
