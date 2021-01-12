@@ -7,7 +7,7 @@ import { DB_URL } from '../../util/constants';
 export default function TwoFactorAuth(props){
 
     function twoFactAuth() {
-        axios.get(`${DB_URL}/login/2fa/${props.username}`,{
+        axios.get(`${DB_URL}/users/login/2fa/${props.username}`,{
             headers:{
                 twoFactorAuth: props.password
             }

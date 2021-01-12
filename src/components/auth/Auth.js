@@ -10,6 +10,7 @@ export class Auth extends Component{
         this.state = {
             username: undefined,
             password:undefined,
+            email: undefined,
             auth1: false
         }
         this.onChange = this.onChange.bind(this);
@@ -36,7 +37,7 @@ export class Auth extends Component{
         <div className="auth-land-zone">
             <div className="outter-container">
                 <h2>Signup</h2>
-                <Signup formFiller={this.onChange} username={this.state.username} password={this.state.password}/>
+                <Signup formFiller={this.onChange} email={this.state.email}username={this.state.username} password={this.state.password}/>
                 <h2>Login</h2>
                 <Login toggleAuth1={this.toggleAuth1} storeUser={this.props.storeUser} token={this.props.token} storeToken={this.props.storeToken} formFiller={this.onChange} username={this.state.username} password={this.state.password}/>
             </div>
@@ -61,7 +62,7 @@ export class Auth extends Component{
                         :
                             <div>
                                 <h2>Signup</h2>
-                                <Signup formFiller={this.onChange} username={this.state.username} password={this.state.password}/>
+                                <Signup formFiller={this.onChange} email={this.state.email} username={this.state.username} password={this.state.password}/>
                                 <h2>Login</h2>
                                 <Login toggleAuth1={this.toggleAuth1} storeUser={this.props.storeUser} token={this.props.token} storeToken={this.props.storeToken} formFiller={this.onChange} username={this.state.username} password={this.state.password}/>
                             </div>
