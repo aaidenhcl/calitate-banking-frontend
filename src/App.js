@@ -22,22 +22,32 @@ export class App extends React.Component {
     this.storeToken = this.storeToken.bind(this);
   }
 
+  /**
+   * stores username to local storage for refresh accomdations
+   * also stores user in state 
+   */
   storeUser(user){
+    console.log(user);
     this.setState({
         user
     })
     window.localStorage.setItem("username", user.username);
   }
 
-storeToken(token){
-  console.log(token);
-  this.setState({
-      token
-  })
-    if(localStorage.getItem("token")){
-      localStorage.removeItem("token");
-    }
-    window.localStorage.setItem("token", token);
+  /**
+   * stores token into local storage for refresh validation
+   * also stores token into state
+   * removes old token if necessary
+   */
+  storeToken(token){
+    console.log(token);
+    this.setState({
+        token
+    })
+      if(localStorage.getItem("token")){
+        localStorage.removeItem("token");
+      }
+      window.localStorage.setItem("token", token);
   }
 
   //Feel free to add any routes to this router! :) 
