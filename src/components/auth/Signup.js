@@ -8,11 +8,12 @@ import {DB_URL} from '../../util/constants';
 export default function Signup(props){
 
     function createUser(e){
-        // console.log(DB_URL);
+        console.log("EMAIL::: " + props.email);
         console.log(e.target.parentNode.children[0]);
         axios.post(`${DB_URL}/users`, {
             username: props.username,
-            password: props.password
+            password: props.password,
+            email: props.email
         })
         .then(response => console.log(response))
         .catch(error => console.log(error));
@@ -30,6 +31,11 @@ export default function Signup(props){
                 <Form.Group >
                     <Form.Label>Password</Form.Label>
                     <Form.Control onChange={props.formFiller} name="password" type="password" placeholder="Enter Password"/>
+                </Form.Group>
+
+                <Form.Group >
+                    <Form.Label>email</Form.Label>
+                    <Form.Control onChange={props.formFiller} name="email" type="email" placeholder="Enter Email"/>
                 </Form.Group>
 
 
