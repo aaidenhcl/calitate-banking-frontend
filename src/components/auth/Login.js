@@ -40,7 +40,6 @@ export default function Login(props){
                     <Form.Control onChange={props.formFiller} name="password" type="password" placeholder="Enter Password"/>
                 </Form.Group>
 
-
                 <Button onClick={authenticateUser}>Login</Button>
             </Form>
         </div>

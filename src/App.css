@@ -1,3 +1,4 @@
+
 .App {
   text-align: center;
 }
@@ -38,6 +39,8 @@
 }
 html,
 body {
+  zoom:120%;
+  background-color: rgb(173, 167, 167);
   height: 100%;
   width: 100%;
   margin: 0;
@@ -82,4 +85,28 @@ body {
 
 .login-container{
   /* opacity: 100%; */
+}
+
+.index{
+  height: 100%;
+  width: 100%;  
+}
+
+.landing-zone{
+  height: 100%;
+  width: 100%;
+}
+
+.response-loader{
+  border: 1rem solid gray;
+  background-color: black;
+  color: rgb(10, 131, 10);
+  height: 18rem;
+  width: 32rem;
+  margin: auto;
+  margin-bottom: 5rem;
+  box-shadow: 5px 10px 5px black;
+  overflow-y: scroll;
+  overflow-x: auto;
+  white-space: wrap
 }
