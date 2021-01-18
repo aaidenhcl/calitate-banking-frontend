@@ -21,6 +21,8 @@ export class LandingZone extends React.Component{
             creditCardPatternsStatsInput: undefined,
             creditCardRequestsDateRangeStart: undefined,
             creditCardRequestsDateRangeEnd: undefined,
+            creditCardApprovalsRegion: undefined,
+            creditCardApprovalsProfession: undefined
         }
         this.handleOnChange = this.handleOnChange.bind(this); 
         this.mockTotalCredit = this.mockTotalCredit.bind(this);
@@ -34,6 +36,10 @@ export class LandingZone extends React.Component{
         this.mockCreditCardRequestsDateRange = this.mockCreditCardRequestsDateRange.bind(this);
         this.handleDateChangeStart = this.handleDateChangeStart.bind(this);
         this.handleDateChangeEnd = this.handleDateChangeEnd.bind(this);
+        this.mockCreditCardRequestsRejected = this.mockCreditCardRequestsRejected.bind(this);
+        this.creditCardApprovalsRegionProfession = this.creditCardApprovalsRegionProfession.bind(this);
+        this.mockCreditCardRequestsStatus = this.mockCreditCardRequestsStatus.bind(this);
+        this.creditCardRequestsAverage = this.creditCardRequestsAverage.bind(this);
     }
 
     handleOnChange(event){
@@ -122,6 +128,51 @@ export class LandingZone extends React.Component{
         .catch(error => this.handleCatch(error));
     }
 
+    mockCreditCardRequestsRejected(){
+        axios.get(`${DB_URL}/creditCardRequests/rejected`,{
+            headers:{
+                Authorization: this.props.token,
+            }
+        }).then(response => this.renderData(JSON.stringify(response.data)))
+        .catch(error => this.handleCatch(error));
+    }
+    creditCardApprovalsRegionProfession(){
+        axios.get(`${DB_URL}/creditCardRequests/approvals/regionProfession`,
+        {
+            headers:{
+                Authorization: this.props.token,
+            },
+            params: {
+                region: this.state.creditCardApprovalsRegion,
+                profession: this.state.creditCardApprovalsProfession
+            }
+        }
+        ).then(response => this.renderData(JSON.stringify(response.data)))
+        .catch(error => this.handleCatch(error));
+    }
+
+    mockCreditCardRequestsStatus(){
+        axios.get(`${DB_URL}/creditCardRequests/status`,
+        {
+            headers:{
+                Authorization: this.props.token,
+            }
+        }
+        ).then(response => this.renderData(JSON.stringify(response.data)))
+        .catch(error => this.handleCatch(error));
+    }
+
+    creditCardRequestsAverage(){
+        axios.get(`${DB_URL}/creditCardRequests/average`,
+        {
+            headers:{
+                Authorization: this.props.token,
+            }
+        }
+        ).then(response => this.renderData(JSON.stringify(response.data)))
+        .catch(error => this.handleCatch(error));
+    }
+
     handleDateChangeStart(e){
         console.log(moment(e._d, "yyyyMMdd").format("yyyyMMDD"))
         this.setState({
@@ -187,11 +238,26 @@ export class LandingZone extends React.Component{
                 <Form>
                     <Button onClick={this.mockCreditCardExpiration} variant="primary" >/creditCards/expiration</Button>
                 </Form>
+
+                <Button onClick={this.mockCreditCardRequestsRejected} variant="primary" >/creditCardRequests/rejected</Button>
+                
+                <Form>
+                    <Form.Control onChange={this.handleOnChange} name="creditCardApprovalsRegion" type="text" placeholder={"Enter a region"} />
+                    <Form.Control onChange={this.handleOnChange} name="creditCardApprovalsProfession" type="text" placeholder={"Enter a profession"} />
+                    <Button onClick={this.creditCardApprovalsRegionProfession} variant="primary" >/creditCardRequests/approvals/regionProfession</Button>
+                </Form>
+
+                <Button onClick={this.mockCreditCardRequestsStatus} variant="primary" >/creditCardRequests/status</Button>
+                <br/>
+                <Button onClick={this.creditCardRequestsAverage} variant="primary" >/creditCardRequests/average</Button>
+                
                 <div class="container">
                     <Datetime onChange={this.handleDateChangeStart} open={true}/>
-                    <Button className={"date-button"} onClick={this.mockCreditCardRequestsDateRange} variant="primary" >/creditCards/expiration</Button>
+                    <Button className={"date-button"} onClick={this.mockCreditCardRequestsDateRange} variant="primary" >/creditCards/dateRange</Button>
                     <Datetime onChange={this.handleDateChangeEnd} open={true}/>
+                    <div></div>
                 </div>
+
             </div>
         )
     }
