@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import "react-datetime/css/react-datetime.css";
 import Datetime from 'react-datetime';
+import moment from 'moment';
 
 
 export class LandingZone extends React.Component{
@@ -30,7 +31,9 @@ export class LandingZone extends React.Component{
         this.mockCreditCardpatterns = this.mockCreditCardpatterns.bind(this);
         this.mockCreditCardpatternsStats = this.mockCreditCardpatternsStats.bind(this);
         this.mockCreditCardExpiration = this.mockCreditCardExpiration.bind(this);
-        this.mockCreditCardRequestsDateRange = this.mockcreditCardRequestsDateRange.bind(this);
+        this.mockCreditCardRequestsDateRange = this.mockCreditCardRequestsDateRange.bind(this);
+        this.handleDateChangeStart = this.handleDateChangeStart.bind(this);
+        this.handleDateChangeEnd = this.handleDateChangeEnd.bind(this);
     }
 
     handleOnChange(event){
@@ -44,7 +47,7 @@ export class LandingZone extends React.Component{
             headers:{
                 Authorization: this.props.token
             }
-        }).then(response => this.renderData(response.data))
+        }).then(response => this.renderData("Total Credit: "+response.data))
         .catch(error => this.handleCatch(error));
     }
 
@@ -105,8 +108,32 @@ export class LandingZone extends React.Component{
         .catch(error => this.handleCatch(error));
     }
 
-    mockcreditCardRequestsDateRange(){
+    mockCreditCardRequestsDateRange(){
+        axios.get(`${DB_URL}/creditCardRequests/dateRange`,{
+            headers:{
+                Authorization: this.props.token,
+            },
+            params:{
+                start: this.state.creditCardRequestsDateRangeStart,
+                end: this.state.creditCardRequestsDateRangeEnd
+            }
+        }
+        ).then(response => this.renderData(JSON.stringify(response.data)))
+        .catch(error => this.handleCatch(error));
+    }
 
+    handleDateChangeStart(e){
+        console.log(moment(e._d, "yyyyMMdd").format("yyyyMMDD"))
+        this.setState({
+            creditCardRequestsDateRangeStart: moment(e._d, "yyyyMMdd").format("yyyyMMDD")
+        })
+    }
+
+    handleDateChangeEnd(e){
+        console.log(moment(e._d, "yyyyMMdd").format("yyyyMMDD"))
+        this.setState({
+            creditCardRequestsDateRangeEnd: moment(e._d, "yyyyMMdd").format("yyyyMMDD")
+        })
     }
 
     renderData(data){
@@ -160,13 +187,11 @@ export class LandingZone extends React.Component{
                 <Form>
                     <Button onClick={this.mockCreditCardExpiration} variant="primary" >/creditCards/expiration</Button>
                 </Form>
-
-                <Form>
-                    <Datetime className="date-time" open={true}/>
-                    <Datetime className="date-time" open={true}/>
-                    <Button onClick={this.mockCreditCardExpiration} variant="primary" >/creditCards/expiration</Button>
-                </Form>
-
+                <div class="container">
+                    <Datetime onChange={this.handleDateChangeStart} open={true}/>
+                    <Button className={"date-button"} onClick={this.mockCreditCardRequestsDateRange} variant="primary" >/creditCards/expiration</Button>
+                    <Datetime onChange={this.handleDateChangeEnd} open={true}/>
+                </div>
             </div>
         )
     }
