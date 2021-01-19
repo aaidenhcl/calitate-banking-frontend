@@ -108,7 +108,8 @@ body {
   box-shadow: 5px 10px 5px black;
   overflow-y: scroll;
   overflow-x: auto;
-  white-space: wrap
+  white-space: wrap;
+  font-size: medium;
 }
 
 .date-time1{

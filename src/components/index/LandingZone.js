@@ -6,6 +6,8 @@ import axios from 'axios';
 import "react-datetime/css/react-datetime.css";
 import Datetime from 'react-datetime';
 import moment from 'moment';
+import { JSONToHTMLTable } from '@kevincobain2000/json-to-html-table'
+var beautify = require("json-beautify");
 
 
 export class LandingZone extends React.Component{
@@ -22,7 +24,10 @@ export class LandingZone extends React.Component{
             creditCardRequestsDateRangeStart: undefined,
             creditCardRequestsDateRangeEnd: undefined,
             creditCardApprovalsRegion: undefined,
-            creditCardApprovalsProfession: undefined
+            creditCardApprovalsProfession: undefined,
+            UserPaymentHistoryInput: undefined,
+            loanRequestsApprovalsRegionInput: undefined,
+            loanRequestsApprovalsProfessionInput: undefined
         }
         this.handleOnChange = this.handleOnChange.bind(this); 
         this.mockTotalCredit = this.mockTotalCredit.bind(this);
@@ -40,6 +45,15 @@ export class LandingZone extends React.Component{
         this.creditCardApprovalsRegionProfession = this.creditCardApprovalsRegionProfession.bind(this);
         this.mockCreditCardRequestsStatus = this.mockCreditCardRequestsStatus.bind(this);
         this.creditCardRequestsAverage = this.creditCardRequestsAverage.bind(this);
+        this.mockRegionSpend = this.mockRegionSpend.bind(this); 
+        this.mockUserPaymentHistory = this.mockUserPaymentHistory.bind(this);
+        this.mockDemographicAge = this.mockDemographicAge.bind(this);
+        this.mockDemographicRegion = this.mockDemographicRegion.bind(this);
+        this.mockDemographicProfession = this.mockDemographicProfession.bind(this);
+        this.mockCreditCardsDiscontinued = this.mockCreditCardsDiscontinued.bind(this);
+        this.mockLoanRequestsStatus = this.mockLoanRequestsStatus.bind(this);
+        this.mockLoanRequestsProfession = this.mockLoanRequestsProfession.bind(this);
+        this.mockLoanRequestsRejected = this.mockLoanRequestsRejected.bind(this); 
     }
 
     handleOnChange(event){
@@ -53,7 +67,11 @@ export class LandingZone extends React.Component{
             headers:{
                 Authorization: this.props.token
             }
-        }).then(response => this.renderData("Total Credit: "+response.data))
+        }).then(response =>{
+            console.log(response.data)
+            this.renderJsonParser(response.data)
+        })
+            
         .catch(error => this.handleCatch(error));
     }
 
@@ -62,16 +80,22 @@ export class LandingZone extends React.Component{
             headers:{
                 Authorization: this.props.token
             }
-        }).then(response => this.renderData(JSON.stringify(response.data)))
+        }).then(response =>{
+            console.log(response.data)
+            this.renderData(response.data)
+        })
         .catch(error => this.handleCatch(error));
     }
 
-    mockClassification(){
-        axios.get(`${DB_URL}/users/${this.state.classificationInput}/classification`,{
+    async mockClassification(){
+        await axios.get(`${DB_URL}/users/${this.state.classificationInput}/classification`,{
             headers:{
                 Authorization: this.props.token
             }
-        }).then(response => this.renderData(JSON.stringify(response.data)))
+        }).then(response => {
+            console.log(response.data)  
+            this.renderJsonParser(response.data)
+        })
         .catch(error => this.handleCatch(error));
     }
 
@@ -81,7 +105,10 @@ export class LandingZone extends React.Component{
                 Authorization: this.props.token,
                 cardNo: this.state.creditCardSpendsInput
             }
-        }).then(response => this.renderData(JSON.stringify(response.data)))
+        }).then(response => {
+            console.log(response.data)
+            this.renderData(response.data)
+        })
         .catch(error => this.handleCatch(error));
     }
 
@@ -91,7 +118,10 @@ export class LandingZone extends React.Component{
                 Authorization: this.props.token,
                 cardNo: this.state.creditCardPatternsInput
             }
-        }).then(response => this.renderData(JSON.stringify(response.data)))
+        }).then(response => {
+            console.log(response.data)  
+            this.renderJsonParser(response.data)
+        })
         .catch(error => this.handleCatch(error));
     }
 
@@ -101,7 +131,10 @@ export class LandingZone extends React.Component{
                 Authorization: this.props.token,
                 cardNo: this.state.creditCardPatternsStatsInput
             }
-        }).then(response => this.renderData(JSON.stringify(response.data)))
+        }).then(response => {
+            console.log(response.data)  
+            this.renderJsonParser(response.data)
+        })
         .catch(error => this.handleCatch(error));
     }
 
@@ -110,7 +143,10 @@ export class LandingZone extends React.Component{
             headers:{
                 Authorization: this.props.token,
             }
-        }).then(response => this.renderData(JSON.stringify(response.data)))
+        }).then(response => {
+            console.log(response.data)  
+            this.renderJsonParser(response.data)
+        })
         .catch(error => this.handleCatch(error));
     }
 
@@ -124,7 +160,10 @@ export class LandingZone extends React.Component{
                 end: this.state.creditCardRequestsDateRangeEnd
             }
         }
-        ).then(response => this.renderData(JSON.stringify(response.data)))
+        ).then(response => {
+            console.log(response.data)  
+            this.renderJsonParser(response.data)
+        })
         .catch(error => this.handleCatch(error));
     }
 
@@ -133,7 +172,10 @@ export class LandingZone extends React.Component{
             headers:{
                 Authorization: this.props.token,
             }
-        }).then(response => this.renderData(JSON.stringify(response.data)))
+        }).then(response => {
+            console.log(response.data)  
+            this.renderJsonParser(response.data)
+        })
         .catch(error => this.handleCatch(error));
     }
     creditCardApprovalsRegionProfession(){
@@ -147,7 +189,10 @@ export class LandingZone extends React.Component{
                 profession: this.state.creditCardApprovalsProfession
             }
         }
-        ).then(response => this.renderData(JSON.stringify(response.data)))
+        ).then(response => {
+            console.log(response.data)  
+            this.renderJsonParser(response.data)
+        })
         .catch(error => this.handleCatch(error));
     }
 
@@ -158,7 +203,10 @@ export class LandingZone extends React.Component{
                 Authorization: this.props.token,
             }
         }
-        ).then(response => this.renderData(JSON.stringify(response.data)))
+        ).then(response => {
+            console.log(response.data)  
+            this.renderData(response.data)
+        })
         .catch(error => this.handleCatch(error));
     }
 
@@ -169,7 +217,140 @@ export class LandingZone extends React.Component{
                 Authorization: this.props.token,
             }
         }
-        ).then(response => this.renderData(JSON.stringify(response.data)))
+        ).then(response => {
+            console.log(response.data)  
+            this.renderJsonParser(response.data)
+        })
+        .catch(error => this.handleCatch(error));
+    }
+
+    mockRegionSpend(){
+        axios.get(`${DB_URL}/spends/regionSpend`,
+        {
+            headers:{
+                Authorization: this.props.token,
+            }
+        }
+        ).then(response => {
+            console.log(response.data)  
+            this.renderData(response.data)
+        })
+        .catch(error => this.handleCatch(error));
+    }
+
+    mockUserPaymentHistory(){
+        axios.get(`${DB_URL}/users/${this.state.UserPaymentHistoryInput}/paymentHistory`,
+        {
+            headers:{
+                Authorization: this.props.token,
+            }
+        }
+        ).then(response => {
+            console.log(response.data)  
+            this.renderJsonParser(response.data)
+        })
+        .catch(error => this.handleCatch(error));
+    }
+
+    mockDemographicAge(){
+        axios.get(`${DB_URL}/users/demographics/age`,
+        {
+            headers:{
+                Authorization: this.props.token,
+            }
+        }
+        ).then(response => {
+            console.log(response.data)  
+            this.renderData(response.data)
+        })
+        .catch(error => this.handleCatch(error));
+    }
+
+    mockDemographicRegion(){
+        axios.get(`${DB_URL}/users/demographics/region`,
+        {
+            headers:{
+                Authorization: this.props.token,
+            }
+        }
+        ).then(response => {
+            console.log(response.data)  
+            this.renderData(response.data)
+        })
+        .catch(error => this.handleCatch(error));
+    }
+
+    mockDemographicProfession(){
+        axios.get(`${DB_URL}/users/demographics/profession`,
+        {
+            headers:{
+                Authorization: this.props.token,
+            }
+        }
+        ).then(response => {
+            console.log(response.data)  
+            this.renderData(response.data)
+        })
+        .catch(error => this.handleCatch(error));
+    }
+
+    mockCreditCardsDiscontinued(){
+        axios.get(`${DB_URL}/creditCards/discontinued`,
+        {
+            headers:{
+                Authorization: this.props.token,
+            }
+        }
+        ).then(response => {
+            console.log(response.data)  
+            this.renderData(response.data)
+        })
+        .catch(error => this.handleCatch(error));
+    }
+
+    mockLoanRequestsStatus(){
+        axios.get(`${DB_URL}/loanRequests/status`,
+        {
+            headers:{
+                Authorization: this.props.token,
+            }
+        }
+        ).then(response => {
+            console.log(response.data)  
+            this.renderData(response.data)
+        })
+        .catch(error => this.handleCatch(error));
+    }
+
+    mockLoanRequestsProfession(){
+        axios.get(`${DB_URL}/loanRequests/approvals/regionProfession`,
+        {
+            headers:{
+                Authorization: this.props.token,
+            },
+            params: {
+                region: this.state.loanRequestsApprovalsRegionInput,
+                profession: this.state.loanRequestsApprovalsProfessionInput
+            }
+        }
+        ).then(response => {
+            console.log(response.data)  
+            this.renderJsonParser(response.data)
+        })
+        .catch(error => this.handleCatch(error));
+    }
+
+    mockLoanRequestsRejected(){
+        axios.get(`${DB_URL}/loanRequests/rejected`,
+        {
+            headers:{
+                Authorization: this.props.token,
+            }
+        }
+        ).then(response => {
+            console.log(response.data)  
+            this.renderJsonParser(response.data)
+        })
         .catch(error => this.handleCatch(error));
     }
 
@@ -190,7 +371,22 @@ export class LandingZone extends React.Component{
     renderData(data){
         let respLoader = document.getElementById("response-loader");
         respLoader.innerHTML = "";
-        respLoader.append(data);
+        data.forEach(cell => {
+            this.renderJsonParser(cell, true)
+            respLoader.innerHTML += "<br/>";
+        })
+        // respLoader.append(data);
+    }
+
+    renderJsonParser(data, iterated = false){
+        let respLoader = document.getElementById("response-loader");
+        const splitData = JSON.stringify(data).split(",");
+        if(iterated != true){
+            respLoader.innerHTML = "";
+        }
+        splitData.forEach(cell => {
+            respLoader.innerHTML += cell+'<br/>'
+        })
     }
 
     handleCatch(error){
@@ -250,7 +446,34 @@ export class LandingZone extends React.Component{
                 <Button onClick={this.mockCreditCardRequestsStatus} variant="primary" >/creditCardRequests/status</Button>
                 <br/>
                 <Button onClick={this.creditCardRequestsAverage} variant="primary" >/creditCardRequests/average</Button>
+                <br/>
+                <Button onClick={this.mockRegionSpend} variant="primary" >/spends/regionSpend</Button>
+
+                <Form>
+                    *needs work*<Form.Control onChange={this.handleOnChange} name="UserPaymentHistoryInput" type="text" placeholder={"Enter a username"} />
+                    <Button onClick={this.mockUserPaymentHistory} variant="primary" >/users/username/paymentHistory</Button>
+                </Form>
+
+                <Button onClick={this.mockDemographicAge} variant="primary" >users/demographics/age</Button>
                 
+                <Button onClick={this.mockDemographicRegion} variant="primary" >users/demographics/region</Button>
+                
+                <Button onClick={this.mockDemographicProfession} variant="primary" >users/demographics/profession</Button>
+
+                <br/>
+                <Button onClick={this.mockCreditCardsDiscontinued} variant="primary" >creditCards/discontinued</Button>
+                
+                <br/>
+                <Button onClick={this.mockLoanRequestsStatus} variant="primary" >loanRequests/status</Button>
+                
+                <Form>
+                    <Form.Control onChange={this.handleOnChange} name="loanRequestsApprovalsRegionInput" type="text" placeholder={"Enter a region"} />
+                    <Form.Control onChange={this.handleOnChange} name="loanRequestsApprovalsProfessionInput" type="text" placeholder={"Enter a profession"} />
+                    <Button onClick={this.mockLoanRequestsProfession} variant="primary" >/loanRequests/approvals/regionProfession</Button>
+                </Form>
+
+                <Button onClick={this.mockLoanRequestsRejected} variant="primary" >/loanRequests/rejected</Button>
+
                 <div class="container">
                     <Datetime onChange={this.handleDateChangeStart} open={true}/>
                     <Button className={"date-button"} onClick={this.mockCreditCardRequestsDateRange} variant="primary" >/creditCards/dateRange</Button>
