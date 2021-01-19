@@ -29,6 +29,7 @@ export class LandingZone extends React.Component{
             loanRequestsApprovalsRegionInput: undefined,
             loanRequestsApprovalsProfessionInput: undefined
         }
+        this.mockUsers = this.mockUsers.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this); 
         this.mockTotalCredit = this.mockTotalCredit.bind(this);
         this.renderData = this.renderData.bind(this);
@@ -354,6 +355,20 @@ export class LandingZone extends React.Component{
         .catch(error => this.handleCatch(error));
     }
 
+    mockUsers(){
+        axios.get(`${DB_URL}/users`,
+        {
+            headers:{
+                Authorization: this.props.token,
+            }
+        }
+        ).then(response => {
+            console.log(response.data)  
+            this.renderJsonParser(response.data)
+        })
+        .catch(error => this.handleCatch(error));
+    }
+
     handleDateChangeStart(e){
         console.log(moment(e._d, "yyyyMMdd").format("yyyyMMDD"))
         this.setState({
@@ -403,23 +418,57 @@ export class LandingZone extends React.Component{
                 
                 </div>
                 <Form>
+                    <Form.Control onChange={this.handleOnChange} name="creditCardSpendsInput" type="text" placeholder={"Enter a credit card number"} />
+                    <Button onClick={this.mockCreditCardSpends} variant="primary" >creditCard/spends</Button>
+                </Form>
+                
+                <Button onClick={this.mockCreditCardExpiration} variant="primary" >/creditCards/expiration</Button>
+
+                <Button onClick={this.mockCreditCardRequestsStatus} variant="primary" >/creditCardRequests/status</Button>
+
+                <Button onClick={this.creditCardRequestsAverage} variant="primary" >/creditCardRequests/average</Button>
+                <br/>
+                <br/>
+
+                <Form>
                     <Button onClick={this.mockRegionSales} variant="primary" >users/regionSale</Button>
                 </Form>
+                <Button onClick={this.mockDemographicAge} variant="primary" >users/demographics/age</Button>
+                <Button onClick={this.mockDemographicRegion} variant="primary" >users/demographics/region</Button>
+                <Button onClick={this.mockDemographicProfession} variant="primary" >users/demographics/profession</Button>
+                <Button onClick={this.mockCreditCardsDiscontinued} variant="primary" >creditCards/discontinued</Button>
+                <Button onClick={this.mockRegionSpend} variant="primary" >/spends/regionSpend</Button>
+                <br/><br/>
+
+                <Button onClick={this.mockLoanRequestsStatus} variant="primary" >loanRequests/status</Button>
 
                 <Form>
                     <Form.Control onChange={this.handleOnChange} name="totalCreditInput" type="text" placeholder={"Enter a username"} />
                     <Button onClick={this.mockTotalCredit} variant="primary" >users/totalCredit</Button>
                 </Form>
+ 
+                <Form>
+                    <Form.Control onChange={this.handleOnChange} name="creditCardApprovalsRegion" type="text" placeholder={"Enter a region"} />
+                    <Form.Control onChange={this.handleOnChange} name="creditCardApprovalsProfession" type="text" placeholder={"Enter a profession"} />
+                    <Button onClick={this.creditCardApprovalsRegionProfession} variant="primary" >/creditCardRequests/approvals/regionProfession</Button>
+                </Form>   
 
                 <Form>
-                    <Form.Control onChange={this.handleOnChange} name="classificationInput" type="text" placeholder={"Enter a username"} />
-                    <Button onClick={this.mockClassification} variant="primary" >users/username/classification</Button>
+                    *needs work*<Form.Control onChange={this.handleOnChange} name="UserPaymentHistoryInput" type="text" placeholder={"Enter a username"} />
+                    <Button onClick={this.mockUserPaymentHistory} variant="primary" >/users/username/paymentHistory</Button>
                 </Form>
-
+           
                 <Form>
-                    <Form.Control onChange={this.handleOnChange} name="creditCardSpendsInput" type="text" placeholder={"Enter a credit card number"} />
-                    <Button onClick={this.mockCreditCardSpends} variant="primary" >creditCard/spends</Button>
+                    <Form.Control onChange={this.handleOnChange} name="loanRequestsApprovalsRegionInput" type="text" placeholder={"Enter a region"} />
+                    <Form.Control onChange={this.handleOnChange} name="loanRequestsApprovalsProfessionInput" type="text" placeholder={"Enter a profession"} />
+                    <Button onClick={this.mockLoanRequestsProfession} variant="primary" >/loanRequests/approvals/regionProfession</Button>
                 </Form>
+                
+                <br/>
+
+                <Button onClick={this.mockLoanRequestsRejected} variant="primary" >/loanRequests/rejected</Button>
+                <Button onClick={this.mockUsers} variant="primary" >/users</Button>
+                <Button onClick={this.mockCreditCardRequestsRejected} variant="primary" >/creditCardRequests/rejected</Button>
 
                 <Form>
                     <Form.Control onChange={this.handleOnChange} name="creditCardPatternsInput" type="text" placeholder={"Enter a credit card number"} />
@@ -431,52 +480,17 @@ export class LandingZone extends React.Component{
                     <Button onClick={this.mockCreditCardpatternsStats} variant="primary" >creditCard/patterns/stats</Button>
                 </Form>
 
-                <Form>
-                    <Button onClick={this.mockCreditCardExpiration} variant="primary" >/creditCards/expiration</Button>
-                </Form>
 
-                <Button onClick={this.mockCreditCardRequestsRejected} variant="primary" >/creditCardRequests/rejected</Button>
                 
                 <Form>
-                    <Form.Control onChange={this.handleOnChange} name="creditCardApprovalsRegion" type="text" placeholder={"Enter a region"} />
-                    <Form.Control onChange={this.handleOnChange} name="creditCardApprovalsProfession" type="text" placeholder={"Enter a profession"} />
-                    <Button onClick={this.creditCardApprovalsRegionProfession} variant="primary" >/creditCardRequests/approvals/regionProfession</Button>
+                    <Form.Control onChange={this.handleOnChange} name="classificationInput" type="text" placeholder={"Enter a username"} />
+                    <Button onClick={this.mockClassification} variant="primary" >users/username/classification</Button>
                 </Form>
 
-                <Button onClick={this.mockCreditCardRequestsStatus} variant="primary" >/creditCardRequests/status</Button>
-                <br/>
-                <Button onClick={this.creditCardRequestsAverage} variant="primary" >/creditCardRequests/average</Button>
-                <br/>
-                <Button onClick={this.mockRegionSpend} variant="primary" >/spends/regionSpend</Button>
-
-                <Form>
-                    *needs work*<Form.Control onChange={this.handleOnChange} name="UserPaymentHistoryInput" type="text" placeholder={"Enter a username"} />
-                    <Button onClick={this.mockUserPaymentHistory} variant="primary" >/users/username/paymentHistory</Button>
-                </Form>
-
-                <Button onClick={this.mockDemographicAge} variant="primary" >users/demographics/age</Button>
-                
-                <Button onClick={this.mockDemographicRegion} variant="primary" >users/demographics/region</Button>
-                
-                <Button onClick={this.mockDemographicProfession} variant="primary" >users/demographics/profession</Button>
-
-                <br/>
-                <Button onClick={this.mockCreditCardsDiscontinued} variant="primary" >creditCards/discontinued</Button>
-                
-                <br/>
-                <Button onClick={this.mockLoanRequestsStatus} variant="primary" >loanRequests/status</Button>
-                
-                <Form>
-                    <Form.Control onChange={this.handleOnChange} name="loanRequestsApprovalsRegionInput" type="text" placeholder={"Enter a region"} />
-                    <Form.Control onChange={this.handleOnChange} name="loanRequestsApprovalsProfessionInput" type="text" placeholder={"Enter a profession"} />
-                    <Button onClick={this.mockLoanRequestsProfession} variant="primary" >/loanRequests/approvals/regionProfession</Button>
-                </Form>
-
-                <Button onClick={this.mockLoanRequestsRejected} variant="primary" >/loanRequests/rejected</Button>
 
                 <div class="container">
                     <Datetime onChange={this.handleDateChangeStart} open={true}/>
-                    <Button className={"date-button"} onClick={this.mockCreditCardRequestsDateRange} variant="primary" >/creditCards/dateRange</Button>
+                    <Button className={"date-button"} onClick={this.mockCreditCardRequestsDateRange} variant="primary" >/creditCardRequests/dateRange</Button>
                     <Datetime onChange={this.handleDateChangeEnd} open={true}/>
                     <div></div>
                 </div>
