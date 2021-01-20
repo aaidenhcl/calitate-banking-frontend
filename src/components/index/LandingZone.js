@@ -427,6 +427,8 @@ export class LandingZone extends React.Component{
                 <Button onClick={this.mockCreditCardRequestsStatus} variant="primary" >/creditCardRequests/status</Button>
 
                 <Button onClick={this.creditCardRequestsAverage} variant="primary" >/creditCardRequests/average</Button>
+                <Button onClick={this.mockLoanRequestsStatus} variant="primary" >loanRequests/status</Button>
+
                 <br/>
                 <br/>
 
@@ -440,8 +442,6 @@ export class LandingZone extends React.Component{
                 <Button onClick={this.mockRegionSpend} variant="primary" >/spends/regionSpend</Button>
                 <br/><br/>
 
-                <Button onClick={this.mockLoanRequestsStatus} variant="primary" >loanRequests/status</Button>
-
                 <Form>
                     <Form.Control onChange={this.handleOnChange} name="totalCreditInput" type="text" placeholder={"Enter a username"} />
                     <Button onClick={this.mockTotalCredit} variant="primary" >users/totalCredit</Button>
@@ -454,7 +454,7 @@ export class LandingZone extends React.Component{
                 </Form>   
 
                 <Form>
-                    *needs work*<Form.Control onChange={this.handleOnChange} name="UserPaymentHistoryInput" type="text" placeholder={"Enter a username"} />
+                    <Form.Control onChange={this.handleOnChange} name="UserPaymentHistoryInput" type="text" placeholder={"Enter a username"} />
                     <Button onClick={this.mockUserPaymentHistory} variant="primary" >/users/username/paymentHistory</Button>
                 </Form>
            
